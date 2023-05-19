@@ -7,12 +7,38 @@
       src="https://rawgithub.com/craftyjs/Crafty/release/dist/crafty-min.js"
     ></script>
     <script>
-      Crafty.init(300, 300, document.getElementById("game"));
+      // Crafty.init(300, 300, document.getElementById("game"));
 
-      Crafty.e("2D, Canvas, Color, Fourway, ")
-        .attr({ x: 0, y: 0, w: 50, h: 50 })
-        .color("#F00")
-        .fourway(200);
+      // Crafty.e("2D, Canvas, Color, Fourway, ")
+      //   .attr({ x: 0, y: 0, w: 50, h: 50 })
+      //   .color("#F00")
+      //   .fourway(200);
+
+      Crafty.init(1300, 700, document.getElementById("game"));
+
+      // Vytvoření hráče
+      var player = Crafty.e("2D, DOM, Color, Fourway, Collision")
+        .attr({ x: 10, y: 10, w: 20, h: 20 })
+        .color("red")
+        .fourway(200)
+        .collision();
+
+      // Vytvoření hranice
+      var hranice = Crafty.e("2D, DOM, Color, Collision")
+        .attr({ x: 0, y: 0, w: 1300, h: 1 })
+        .color("black")
+        .collision()
+        .onHit("Player", function (hitData) {
+          // Získání hráče, který narazil na hranici
+          var playerHit = hitData[0].obj;
+
+          // Vrácení hráče na předchozí pozici před kolizí
+          playerHit.x -= playerHit.dx;
+          playerHit.y -= playerHit.dy;
+        });
+
+      // Přidání hráče do vrstvy s kolizemi
+      player.addComponent("Player");
     </script>
   </body>
 </html>
