@@ -23,9 +23,51 @@
         .fourway(200)
         .collision();
 
-      // Vytvoření hranice
+      // Vytvoření hranice 1-nahore
       var hranice = Crafty.e("2D, DOM, Color, Collision")
         .attr({ x: 0, y: 0, w: 1300, h: 1 })
+        .color("black")
+        .collision()
+        .onHit("Player", function (hitData) {
+          // Získání hráče, který narazil na hranici
+          var playerHit = hitData[0].obj;
+
+          // Vrácení hráče na předchozí pozici před kolizí
+          playerHit.x -= playerHit.dx;
+          playerHit.y -= playerHit.dy;
+        });
+
+      // Vytvoření hranice 2-dole
+      var hranice = Crafty.e("2D, DOM, Color, Collision")
+        .attr({ x: 0, y: 700, w: 1300, h: 1 })
+        .color("black")
+        .collision()
+        .onHit("Player", function (hitData) {
+          // Získání hráče, který narazil na hranici
+          var playerHit = hitData[0].obj;
+
+          // Vrácení hráče na předchozí pozici před kolizí
+          playerHit.x -= playerHit.dx;
+          playerHit.y -= playerHit.dy;
+        });
+
+      // Vytvoření hranice 3-vpravo
+      var hranice = Crafty.e("2D, DOM, Color, Collision")
+        .attr({ x: 1300, y: 1, w: 1300, h: 1000 })
+        .color("black")
+        .collision()
+        .onHit("Player", function (hitData) {
+          // Získání hráče, který narazil na hranici
+          var playerHit = hitData[0].obj;
+
+          // Vrácení hráče na předchozí pozici před kolizí
+          playerHit.x -= playerHit.dx;
+          playerHit.y -= playerHit.dy;
+        });
+
+      // Vytvoření hranice 4-vlevo
+      var hranice = Crafty.e("2D, DOM, Color, Collision")
+        .attr({ x: 0, y: 1, w: 1, h: 1000 })
         .color("black")
         .collision()
         .onHit("Player", function (hitData) {
