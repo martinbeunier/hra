@@ -7,6 +7,24 @@
       src="https://rawgithub.com/craftyjs/Crafty/release/dist/crafty-min.js"
     ></script>
     <script>
+      var assetsObj = {
+        sprites: {
+          // This spritesheet has 16 images, in a 2 by 8 grid
+          // The dimensions are 832x228
+          "tom.jpg": {
+            // This is the width of each image in pixels
+            tile: 3000,
+            // The height of each image
+            tileh: 3300,
+            // We give names to three individual images
+            map: {
+              walker_start: [0, 0],
+            },
+          },
+        },
+      };
+
+      Crafty.load(assetsObj);
       // Crafty.init(300, 300, document.getElementById("game"));
 
       // Crafty.e("2D, Canvas, Color, Fourway, ")
@@ -17,9 +35,8 @@
       Crafty.init(1300, 700, document.getElementById("game"));
 
       // Vytvoření hráče
-      var player = Crafty.e("2D, DOM, Color, Fourway, Collision")
-        .attr({ x: 10, y: 10, w: 20, h: 20 })
-        .color("red")
+      var player = Crafty.e("2D, DOM, walker_start, Fourway, Collision")
+        .attr({ x: 10, y: 10, w: 50, h: 50 })
         .fourway(200)
         .collision();
 
@@ -52,7 +69,7 @@
 
       // Vytvoření nepřítele
       var enemy = Crafty.e("2D, DOM, Color, Tween, Collision")
-        .attr({ x: 100, y: 100, w: 50, h: 50 })
+        .attr({ x: 100, y: 100, w: 20, h: 20 })
         .color("blue")
         .onHit("Player", function () {
           var timerElement = document.getElementById("timer");
@@ -63,8 +80,8 @@
 
       // Náhodné pohybování nepřítele
       function moveEnemy() {
-        var newX = Crafty.math.randomInt(1, 1250);
-        var newY = Crafty.math.randomInt(1, 650);
+        var newX = Crafty.math.randomInt(1, 1280);
+        var newY = Crafty.math.randomInt(1, 680);
         enemy.tween({ x: newX, y: newY }, 1000);
         setTimeout(moveEnemy, 1000); // Spustí pohyb nepřítele každé 2 sekundy
       }
