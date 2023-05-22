@@ -23,61 +23,29 @@
         .fourway(200)
         .collision();
 
+      var createBoundaries = function (x, y, w, h) {
+        Crafty.e("2D, DOM, Color, Collision")
+          .attr({ x: x, y: y, w: w, h: h })
+          .color("black")
+          .collision()
+          .onHit("Player", function (hitData) {
+            // Získání hráče, který narazil na hranici
+            var playerHit = hitData[0].obj;
+
+            // Vrácení hráče na předchozí pozici před kolizí
+            playerHit.x -= playerHit.dx;
+            playerHit.y -= playerHit.dy;
+          });
+      };
+
       // Vytvoření hranice 1-nahore
-      var hranice = Crafty.e("2D, DOM, Color, Collision")
-        .attr({ x: 0, y: 0, w: 1300, h: 1 })
-        .color("black")
-        .collision()
-        .onHit("Player", function (hitData) {
-          // Získání hráče, který narazil na hranici
-          var playerHit = hitData[0].obj;
-
-          // Vrácení hráče na předchozí pozici před kolizí
-          playerHit.x -= playerHit.dx;
-          playerHit.y -= playerHit.dy;
-        });
-
-      // Vytvoření hranice 2-dole
-      var hranice = Crafty.e("2D, DOM, Color, Collision")
-        .attr({ x: 0, y: 700, w: 1300, h: 1 })
-        .color("black")
-        .collision()
-        .onHit("Player", function (hitData) {
-          // Získání hráče, který narazil na hranici
-          var playerHit = hitData[0].obj;
-
-          // Vrácení hráče na předchozí pozici před kolizí
-          playerHit.x -= playerHit.dx;
-          playerHit.y -= playerHit.dy;
-        });
-
+      createBoundaries(0, 0, 1300, 1);
+      createBoundaries(0, 700, 1300, 1);
       // Vytvoření hranice 3-vpravo
-      var hranice = Crafty.e("2D, DOM, Color, Collision")
-        .attr({ x: 1300, y: 1, w: 1300, h: 1000 })
-        .color("black")
-        .collision()
-        .onHit("Player", function (hitData) {
-          // Získání hráče, který narazil na hranici
-          var playerHit = hitData[0].obj;
-
-          // Vrácení hráče na předchozí pozici před kolizí
-          playerHit.x -= playerHit.dx;
-          playerHit.y -= playerHit.dy;
-        });
+      createBoundaries(1300, 1, 1300, 1000);
 
       // Vytvoření hranice 4-vlevo
-      var hranice = Crafty.e("2D, DOM, Color, Collision")
-        .attr({ x: 0, y: 1, w: 1, h: 1000 })
-        .color("black")
-        .collision()
-        .onHit("Player", function (hitData) {
-          // Získání hráče, který narazil na hranici
-          var playerHit = hitData[0].obj;
-
-          // Vrácení hráče na předchozí pozici před kolizí
-          playerHit.x -= playerHit.dx;
-          playerHit.y -= playerHit.dy;
-        });
+      createBoundaries(0, 1, 1, 1000);
 
       // Přidání hráče do vrstvy s kolizemi
       player.addComponent("Player");
@@ -87,7 +55,8 @@
         .attr({ x: 100, y: 100, w: 50, h: 50 })
         .color("blue")
         .onHit("Player", function () {
-          alert("Vyhrál jsi!");
+          var timerElement = document.getElementById("timer");
+          alert("Vyhrál jsi! Celkový čas:" + timerElement.innerHTML);
           player.destroy(); // Zničí hráče po kolizi
           location.reload();
         });
