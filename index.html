@@ -81,6 +81,26 @@
 
       // Přidání hráče do vrstvy s kolizemi
       player.addComponent("Player");
+
+      // Vytvoření nepřítele
+      var enemy = Crafty.e("2D, DOM, Color, Tween, Collision")
+        .attr({ x: 100, y: 100, w: 50, h: 50 })
+        .color("blue")
+        .onHit("Player", function () {
+          alert("Prohrál jsi!");
+          player.destroy(); // Zničí hráče po kolizi
+          location.reload();
+        });
+
+      // Náhodné pohybování nepřítele
+      function moveEnemy() {
+        var newX = Crafty.math.randomInt(1, 1250);
+        var newY = Crafty.math.randomInt(1, 650);
+        enemy.tween({ x: newX, y: newY }, 1000);
+        setTimeout(moveEnemy, 1000); // Spustí pohyb nepřítele každé 2 sekundy
+      }
+
+      moveEnemy();
     </script>
   </body>
 </html>
