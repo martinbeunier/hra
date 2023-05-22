@@ -87,7 +87,7 @@
         .attr({ x: 100, y: 100, w: 50, h: 50 })
         .color("blue")
         .onHit("Player", function () {
-          alert("Prohrál jsi!");
+          alert("Vyhrál jsi!");
           player.destroy(); // Zničí hráče po kolizi
           location.reload();
         });
@@ -101,6 +101,38 @@
       }
 
       moveEnemy();
+    </script>
+    <div id="timer" style="position: absolute; top: 10; left: 1350"></div>
+    <script>
+      var time = 0; // Čas v sekundách
+      var timerElement = document.getElementById("timer"); // Element, ve kterém bude zobrazen čas
+
+      // Funkce pro aktualizaci zobrazení času
+      function updateTimer() {
+        var minutes = Math.floor(time / 60); // Vypočítá minuty
+        var seconds = Math.floor(time % 60); // Vypočítá sekundy
+        var milliseconds = Math.floor((time % 1) * 100); // Vypočítá setiny sekundy
+        var formattedTime =
+          ("0" + minutes).slice(-2) +
+          ":" +
+          ("0" + seconds).slice(-2) +
+          "." +
+          ("0" + milliseconds).slice(-2); // Formátuje čas ve tvaru mm:ss:ms
+        timerElement.innerHTML = formattedTime; // Aktualizuje zobrazení času
+      }
+
+      // Funkce pro spuštění sčítače
+      function startTimer() {
+        setInterval(function () {
+          time += 0.01; // Zvyšuje čas o 0.01 sekundy (setiny sekundy)
+          updateTimer(); // Aktualizuje zobrazení času
+        }, 10); // Spustí aktualizaci každých 10 milisekund (0.01 sekundy)
+      }
+
+      // Spustí sčítač po načtení stránky
+      window.onload = function () {
+        startTimer();
+      };
     </script>
   </body>
 </html>
