@@ -23,61 +23,29 @@
         .fourway(200)
         .collision();
 
+      var createBoundaries = function (x, y, w, h) {
+        Crafty.e("2D, DOM, Color, Collision")
+          .attr({ x: x, y: y, w: w, h: h })
+          .color("black")
+          .collision()
+          .onHit("Player", function (hitData) {
+            // Získání hráče, který narazil na hranici
+            var playerHit = hitData[0].obj;
+
+            // Vrácení hráče na předchozí pozici před kolizí
+            playerHit.x -= playerHit.dx;
+            playerHit.y -= playerHit.dy;
+          });
+      };
+
       // Vytvoření hranice 1-nahore
-      var hranice = Crafty.e("2D, DOM, Color, Collision")
-        .attr({ x: 0, y: 0, w: 1300, h: 1 })
-        .color("black")
-        .collision()
-        .onHit("Player", function (hitData) {
-          // Získání hráče, který narazil na hranici
-          var playerHit = hitData[0].obj;
-
-          // Vrácení hráče na předchozí pozici před kolizí
-          playerHit.x -= playerHit.dx;
-          playerHit.y -= playerHit.dy;
-        });
-
-      // Vytvoření hranice 2-dole
-      var hranice = Crafty.e("2D, DOM, Color, Collision")
-        .attr({ x: 0, y: 700, w: 1300, h: 1 })
-        .color("black")
-        .collision()
-        .onHit("Player", function (hitData) {
-          // Získání hráče, který narazil na hranici
-          var playerHit = hitData[0].obj;
-
-          // Vrácení hráče na předchozí pozici před kolizí
-          playerHit.x -= playerHit.dx;
-          playerHit.y -= playerHit.dy;
-        });
-
+      createBoundaries(0, 0, 1300, 1);
+      createBoundaries(0, 700, 1300, 1);
       // Vytvoření hranice 3-vpravo
-      var hranice = Crafty.e("2D, DOM, Color, Collision")
-        .attr({ x: 1300, y: 1, w: 1300, h: 1000 })
-        .color("black")
-        .collision()
-        .onHit("Player", function (hitData) {
-          // Získání hráče, který narazil na hranici
-          var playerHit = hitData[0].obj;
-
-          // Vrácení hráče na předchozí pozici před kolizí
-          playerHit.x -= playerHit.dx;
-          playerHit.y -= playerHit.dy;
-        });
+      createBoundaries(1300, 1, 1300, 1000);
 
       // Vytvoření hranice 4-vlevo
-      var hranice = Crafty.e("2D, DOM, Color, Collision")
-        .attr({ x: 0, y: 1, w: 1, h: 1000 })
-        .color("black")
-        .collision()
-        .onHit("Player", function (hitData) {
-          // Získání hráče, který narazil na hranici
-          var playerHit = hitData[0].obj;
-
-          // Vrácení hráče na předchozí pozici před kolizí
-          playerHit.x -= playerHit.dx;
-          playerHit.y -= playerHit.dy;
-        });
+      createBoundaries(0, 1, 1, 1000);
 
       // Přidání hráče do vrstvy s kolizemi
       player.addComponent("Player");
@@ -87,7 +55,8 @@
         .attr({ x: 100, y: 100, w: 50, h: 50 })
         .color("blue")
         .onHit("Player", function () {
-          alert("Prohrál jsi!");
+          var timerElement = document.getElementById("timer");
+          alert("Vyhrál jsi! Celkový čas:" + timerElement.innerHTML);
           player.destroy(); // Zničí hráče po kolizi
           location.reload();
         });
@@ -101,6 +70,38 @@
       }
 
       moveEnemy();
+    </script>
+    <div id="timer" style="position: absolute; top: 10; left: 1350"></div>
+    <script>
+      var time = 0; // Čas v sekundách
+      var timerElement = document.getElementById("timer"); // Element, ve kterém bude zobrazen čas
+
+      // Funkce pro aktualizaci zobrazení času
+      function updateTimer() {
+        var minutes = Math.floor(time / 60); // Vypočítá minuty
+        var seconds = Math.floor(time % 60); // Vypočítá sekundy
+        var milliseconds = Math.floor((time % 1) * 100); // Vypočítá setiny sekundy
+        var formattedTime =
+          ("0" + minutes).slice(-2) +
+          ":" +
+          ("0" + seconds).slice(-2) +
+          "." +
+          ("0" + milliseconds).slice(-2); // Formátuje čas ve tvaru mm:ss:ms
+        timerElement.innerHTML = formattedTime; // Aktualizuje zobrazení času
+      }
+
+      // Funkce pro spuštění sčítače
+      function startTimer() {
+        setInterval(function () {
+          time += 0.01; // Zvyšuje čas o 0.01 sekundy (setiny sekundy)
+          updateTimer(); // Aktualizuje zobrazení času
+        }, 10); // Spustí aktualizaci každých 10 milisekund (0.01 sekundy)
+      }
+
+      // Spustí sčítač po načtení stránky
+      window.onload = function () {
+        startTimer();
+      };
     </script>
   </body>
 </html>
