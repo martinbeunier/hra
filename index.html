@@ -7,6 +7,42 @@
       src="https://rawgithub.com/craftyjs/Crafty/release/dist/crafty-min.js"
     ></script>
     <script>
+      var tom2 = {
+        sprites: {
+          // This spritesheet has 16 images, in a 2 by 8 grid
+          // The dimensions are 832x228
+          "tom2.jpg": {
+            // This is the width of each image in pixels
+            tile: 3002,
+            // The height of each image
+            tileh: 3336,
+            // We give names to three individual images
+            map: {
+              tom: [0, 0],
+            },
+          },
+        },
+      };
+
+      var jery2 = {
+        sprites: {
+          // This spritesheet has 16 images, in a 2 by 8 grid
+          // The dimensions are 832x228
+          "jery2.png": {
+            // This is the width of each image in pixels
+            tile: 167,
+            // The height of each image
+            tileh: 89,
+            // We give names to three individual images
+            map: {
+              jery: [0, 0],
+            },
+          },
+        },
+      };
+
+      Crafty.load(tom2);
+      Crafty.load(jery2);
       // Crafty.init(300, 300, document.getElementById("game"));
 
       // Crafty.e("2D, Canvas, Color, Fourway, ")
@@ -17,10 +53,9 @@
       Crafty.init(1300, 700, document.getElementById("game"));
 
       // Vytvoření hráče
-      var player = Crafty.e("2D, DOM, Color, Fourway, Collision")
-        .attr({ x: 10, y: 10, w: 20, h: 20 })
-        .color("red")
-        .fourway(200)
+      var player = Crafty.e("2D, DOM, tom, Fourway, Collision")
+        .attr({ x: 10, y: 10, w: 60, h: 60 })
+        .fourway(180)
         .collision();
 
       var createBoundaries = function (x, y, w, h) {
@@ -51,9 +86,9 @@
       player.addComponent("Player");
 
       // Vytvoření nepřítele
-      var enemy = Crafty.e("2D, DOM, Color, Tween, Collision")
-        .attr({ x: 100, y: 100, w: 50, h: 50 })
-        .color("blue")
+      var enemy = Crafty.e("2D, DOM, Tween, Collision,jery")
+        .attr({ x: 100, y: 100, w: 30, h: 30 })
+
         .onHit("Player", function () {
           var timerElement = document.getElementById("timer");
           alert("Vyhrál jsi! Celkový čas:" + timerElement.innerHTML);
@@ -63,8 +98,8 @@
 
       // Náhodné pohybování nepřítele
       function moveEnemy() {
-        var newX = Crafty.math.randomInt(1, 1250);
-        var newY = Crafty.math.randomInt(1, 650);
+        var newX = Crafty.math.randomInt(1, 1270);
+        var newY = Crafty.math.randomInt(1, 670);
         enemy.tween({ x: newX, y: newY }, 1000);
         setTimeout(moveEnemy, 1000); // Spustí pohyb nepřítele každé 2 sekundy
       }
